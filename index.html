@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Component</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Include circular-progressbar library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.css">
+</head>
+<body>
+  <div class="Card">
+    <div class="CompactCard" style="background: linear-gradient(180deg, #6ab04c 0%, #2c7744 100%); box-shadow: 0px 10px 20px 0px #92ca88;">
+      <div class="radialBar">
+        <div class="CircularProgressbar" id="progressbar1" data-percentage="30"></div>
+        <span>Services 1</span>
+      </div>
+      <div class="detail">
+        <!-- <span><img src="img1.png"></span> -->
+        <!-- <span>30</span> -->
+        <span>Last 24 hours</span>
+      </div>
+    </div>
+
+    <div class="CompactCard" style="background: linear-gradient(180deg, #913f97 0%, #45221a 100%); box-shadow: 0px 10px 20px 0px #6d3a20;">
+      <div class="radialBar">
+        <div class="CircularProgressbar" id="progressbar2" data-percentage="50"></div>
+        <span>Services 2</span>
+      </div>
+      <div class="detail">
+       
+        <!-- <span>50</span> -->
+        <span>Last 24 hours</span>
+      </div>
+    </div>
+
+    <div class="CompactCard" style="background: linear-gradient(180deg, #21b2c8 0%, #04502f 100%); box-shadow: 0px 10px 20px 0px #6699ff;">
+      <div class="radialBar">
+        <div class="CircularProgressbar" id="progressbar3" data-percentage="100"></div>
+        <span>Services 3</span>
+      </div>
+      <div class="detail">
+       
+        <!-- <span>80</span> -->
+        <span>Last 24 hours</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include circular-progressbar library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const percentages = [
+        parseInt(document.querySelector('#progressbar1').getAttribute('data-percentage')),
+        parseInt(document.querySelector('#progressbar2').getAttribute('data-percentage')),
+        parseInt(document.querySelector('#progressbar3').getAttribute('data-percentage'))
+      ];
+
+      // Initialize CircularProgressbar for each gauge
+      for (let i = 0; i < percentages.length; i++) {
+        const bar = new ProgressBar.Circle('#progressbar' + (i + 1), {
+          strokeWidth: 10, // Increase strokeWidth for bigger gauge
+          trailWidth: 10, // Increase trailWidth for bigger gauge
+          easing: 'easeInOut',
+          duration: 1400,
+          text: {
+            autoStyleContainer: false
+          },
+          from: { color: '#aaa', width: 10 },
+          to: { color: ['#6ab04c', '#ff6600', '#3366cc'][i], width: 10 }, // Change colors based on index
+          // Set default step function for all animate calls
+          step: function(state, circle) {
+            circle.path.setAttribute('stroke', state.color);
+            circle.path.setAttribute('stroke-width', state.width);
+            const value = Math.round(circle.value() * 100);
+            if (value === 0) {
+              circle.setText('');
+            } else {
+              circle.setText(value + '%');
+            }
+          }
+        });
+
+        // Animate CircularProgressbar to the given percentage
+        bar.animate(percentages[i] / 100);
+      }
+    });
+  </script>
+</body>
+</html>
